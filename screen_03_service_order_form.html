@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Order Entry - New Customer</title>
+    <style>
+    
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f5f5f5;
+    color: #323130;
+}
+
+.app-header {
+    background: white;
+    border-bottom: 1px solid #e1dfdd;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.app-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #323130;
+}
+
+.app-icon {
+    width: 20px;
+    height: 20px;
+    fill: #623c98;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-name {
+    font-size: 14px;
+    color: #605e5c;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #623c98;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.page-content {
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-header h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #323130;
+    margin-bottom: 8px;
+}
+
+.page-description {
+    font-size: 14px;
+    color: #605e5c;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.btn-primary {
+    background: #623c98;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #4a2c7a;
+}
+
+.btn-secondary {
+    background: white;
+    color: #323130;
+    border: 1px solid #d2d0ce;
+}
+
+.btn-secondary:hover {
+    background: #f3f2f1;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="app-header">
+    <div class="app-title">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        <span>Service Order Entry</span>
+    </div>
+    <div class="user-menu">
+        <span class="user-name">Dean</span>
+        <div class="user-avatar">D</div>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="page-header-with-process">
+        <div>
+            <h1>New Service Order</h1>
+            <p class="page-description">Create a new customer site</p>
+        </div>
+        <div class="process-flow">
+            <div class="process-title">Customer Onboarding</div>
+            <div class="process-steps">
+                <div class="process-step active">
+                    <div class="process-circle">1</div>
+                    <div class="process-label">Collect Info</div>
+                </div>
+                <div class="process-line"></div>
+                <div class="process-step">
+                    <div class="process-circle">2</div>
+                    <div class="process-label">Configure</div>
+                </div>
+                <div class="process-line"></div>
+                <div class="process-step">
+                    <div class="process-circle">3</div>
+                    <div class="process-label">Devices</div>
+                </div>
+                <div class="process-line"></div>
+                <div class="process-step">
+                    <div class="process-circle">4</div>
+                    <div class="process-label">Activate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-tabs">
+        <button class="tab-button active">General</button>
+        <button class="tab-button">Address</button>
+        <button class="tab-button">Monitoring</button>
+        <button class="tab-button">Contact Info</button>
+        <button class="tab-button">Related</button>
+    </div>
+    
+    <div class="form-card">
+        <div class="form-grid">
+            <div class="form-group full-width disabled">
+                <label class="form-label">
+                    Site ID
+                    <span class="field-lock">🔒</span>
+                </label>
+                <input type="text" class="form-input" value="00146615-0001" disabled>
+                <span class="field-hint">Auto-generated</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label required">Customer Account Number</label>
+                <input type="text" class="form-input" placeholder="8-digit EEN account" value="00146615">
+                <span class="field-hint">8-digit EEN account number</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label required">Business Name</label>
+                <input type="text" class="form-input" placeholder="Enter business name" value="Space-Made">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label required">EEN Site Name</label>
+                <input type="text" class="form-input" placeholder="Enter site name" value="Riley Studios">
+                <span class="field-hint">Name of this specific site</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">EEN Site GUID</label>
+                <input type="text" class="form-input" placeholder="Optional for Basic accounts">
+                <span class="field-hint">Leave blank for EEN Basic accounts</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label required">EEN Version Type</label>
+                <select class="form-select">
+                    <option value="Basic" selected>Basic</option>
+                    <option value="Professional">Professional</option>
+                    <option value="Enterprise">Enterprise</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label required">Customer Status</label>
+                <select class="form-select">
+                    <option value="Onboarding" selected>Onboarding</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Incubation">Incubation</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label required">Customer System Type</label>
+                <select class="form-select">
+                    <option value="Eagle Eye Networks" selected>Eagle Eye Networks</option>
+                    <option value="Milestone">Milestone</option>
+                    <option value="Brivo">Brivo</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label required">Site Type</label>
+                <select class="form-select">
+                    <option value="">Select site type</option>
+                    <option value="Residential">Residential</option>
+                    <option value="Commercial" selected>Commercial</option>
+                    <option value="Industrial">Industrial</option>
+                    <option value="Construction">Construction</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label required">Monitoring Level</label>
+                <select class="form-select">
+                    <option value="Level 1">Level 1 - 24/7 Monitoring</option>
+                    <option value="Level 2" selected>Level 2 - After Hours</option>
+                    <option value="Level 3">Level 3 - Alerts Only</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label required">Number of Cameras</label>
+                <input type="number" class="form-input" value="6" min="0">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Priority Station</label>
+                <input type="text" class="form-input" placeholder="Enter station ID">
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button class="btn btn-secondary">
+                <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                Cancel
+            </button>
+            <button class="btn btn-secondary">
+                <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                Save
+            </button>
+            <button class="btn btn-primary">
+                Next Stage
+                <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+            </button>
+        </div>
+    </div>
+    
+    <div class="info-note">
+        <strong>Note:</strong> Fields marked with <span class="required">*</span> are required. After saving, you can add related records like emergency contacts, operating hours, and holidays.
+    </div>
+</div>
+
+<style>
+.page-header-with-process {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.process-flow {
+    background: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.process-title {
+    font-size: 12px;
+    color: #605e5c;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.process-steps {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.process-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.process-step.active .process-circle {
+    background: #623c98;
+    color: white;
+}
+
+.process-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e1dfdd;
+    color: #605e5c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.process-label {
+    font-size: 11px;
+    color: #605e5c;
+    white-space: nowrap;
+}
+
+.process-step.active .process-label {
+    color: #623c98;
+    font-weight: 600;
+}
+
+.process-line {
+    width: 40px;
+    height: 2px;
+    background: #e1dfdd;
+    margin-bottom: 20px;
+}
+
+.form-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 0;
+    background: white;
+    padding: 8px 8px 0 8px;
+    border-radius: 8px 8px 0 0;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    color: #605e5c;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab-button:hover {
+    color: #323130;
+    background: #f3f2f1;
+}
+
+.tab-button.active {
+    color: #623c98;
+    border-bottom-color: #623c98;
+}
+
+.form-card {
+    background: white;
+    padding: 32px;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 20px;
+    margin-bottom: 32px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group.disabled {
+    opacity: 0.7;
+}
+
+.form-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #323130;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-label.required::after {
+    content: "*";
+    color: #d13438;
+    font-weight: bold;
+}
+
+.field-lock {
+    font-size: 12px;
+}
+
+.form-input,
+.form-select {
+    padding: 8px 12px;
+    border: 1px solid #d2d0ce;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    background: white;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #623c98;
+}
+
+.form-input:disabled {
+    background: #f3f2f1;
+    cursor: not-allowed;
+}
+
+.field-hint {
+    font-size: 12px;
+    color: #8a8886;
+    margin-top: 4px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid #e1dfdd;
+}
+
+.info-note {
+    background: #e7f3ff;
+    border-left: 4px solid #0078d4;
+    padding: 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-top: 24px;
+}
+
+.required {
+    color: #d13438;
+    font-weight: bold;
+}
+</style>
+
+</body>
+</html>

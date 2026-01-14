@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Assignment - Canvas App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            color: #323130;
+        }
+        
+        .canvas-app {
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .canvas-header {
+            background: linear-gradient(135deg, #623c98 0%, #7b1fa2 100%);
+            color: white;
+            padding: 20px 32px;
+        }
+        
+        .canvas-title {
+            font-size: 24px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .canvas-icon {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+        
+        .status-bar {
+            display: flex;
+            gap: 24px;
+            font-size: 14px;
+            opacity: 0.95;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .canvas-content {
+            padding: 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .filter-section {
+            background: #f8f9fa;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 200px;
+            gap: 16px;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #323130;
+        }
+        
+        .filter-select {
+            padding: 10px 12px;
+            border: 1px solid #d2d0ce;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            font-family: inherit;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: #623c98;
+        }
+        
+        .btn-refresh {
+            padding: 10px 20px;
+            background: #623c98;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-refresh:hover {
+            background: #4a2c7a;
+        }
+        
+        .device-list-container {
+            background: white;
+            border: 1px solid #e1dfdd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        
+        .list-header {
+            background: #f8f9fa;
+            padding: 16px 24px;
+            border-bottom: 2px solid #e1dfdd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .list-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #323130;
+        }
+        
+        .selection-info {
+            font-size: 14px;
+            color: #605e5c;
+        }
+        
+        .selection-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn-select {
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid #d2d0ce;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-select:hover {
+            background: #f3f2f1;
+        }
+        
+        .device-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .device-item {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f3f2f1;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        
+        .device-item:hover {
+            background: #fafafa;
+        }
+        
+        .device-item.selected {
+            background: #f3f0f7;
+            border-left: 4px solid #623c98;
+        }
+        
+        .device-main {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        
+        .device-checkbox {
+            margin-top: 4px;
+        }
+        
+        .device-checkbox input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .device-info {
+            flex: 1;
+        }
+        
+        .device-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .device-icon {
+            width: 24px;
+            height: 24px;
+            fill: #623c98;
+        }
+        
+        .device-esn {
+            font-size: 16px;
+            font-weight: 600;
+            color: #323130;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .device-name {
+            font-size: 15px;
+            color: #323130;
+            margin-bottom: 8px;
+        }
+        
+        .device-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #605e5c;
+        }
+        
+        .device-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .status-dot.online {
+            background: #0b7a75;
+            box-shadow: 0 0 8px rgba(11, 122, 117, 0.5);
+        }
+        
+        .status-dot.offline {
+            background: #d13438;
+            box-shadow: 0 0 8px rgba(209, 52, 56, 0.5);
+        }
+        
+        .assign-section {
+            background: #623c98;
+            color: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 32px;
+        }
+        
+        .assign-title {
+            font-size: 16px;
+            margin-bottom: 16px;
+            opacity: 0.95;
+        }
+        
+        .assign-controls {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            align-items: end;
+        }
+        
+        .assign-select {
+            padding: 12px 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            font-size: 15px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-family: inherit;
+        }
+        
+        .assign-select option {
+            background: #623c98;
+            color: white;
+        }
+        
+        .btn-assign {
+            padding: 14px 32px;
+            background: white;
+            color: #623c98;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .btn-assign:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+        
+        .btn-assign:active {
+            transform: translateY(0);
+        }
+        
+        .btn-assign svg {
+            width: 20px;
+            height: 20px;
+            fill: #623c98;
+        }
+        
+        .progress-section {
+            background: white;
+            border: 1px solid #e1dfdd;
+            border-radius: 8px;
+            padding: 24px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .progress-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #323130;
+        }
+        
+        .progress-stats {
+            font-size: 24px;
+            font-weight: 700;
+            color: #623c98;
+        }
+        
+        .progress-bar-container {
+            background: #f3f2f1;
+            height: 32px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #623c98 0%, #7b1fa2 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 16px;
+        }
+        
+        .progress-text {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .site-progress-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+        }
+        
+        .site-progress-item {
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .site-progress-item.complete {
+            background: #e7f5e9;
+        }
+        
+        .site-name {
+            font-size: 14px;
+            color: #323130;
+            font-weight: 500;
+        }
+        
+        .site-cameras {
+            font-size: 13px;
+            color: #605e5c;
+        }
+        
+        .site-status {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .site-status.complete {
+            color: #0b7a75;
+        }
+        
+        .site-status.pending {
+            color: #f57c00;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-app">
+        <div class="canvas-header">
+            <div class="canvas-title">
+                <svg class="canvas-icon" viewBox="0 0 24 24">
+                    <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                </svg>
+                Device Assignment
+            </div>
+            <div class="status-bar">
+                <div class="status-item">
+                    <span>Customer:</span>
+                    <span class="status-badge">00146615 - Space-Made</span>
+                </div>
+                <div class="status-item">
+                    <span>50 imported</span>
+                    <span>•</span>
+                    <span style="color: #ffaa44;">14 unassigned</span>
+                    <span>•</span>
+                    <span style="color: #4caf50;">36 assigned</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="canvas-content">
+            <div class="filter-section">
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label class="filter-label">Target Site</label>
+                        <select class="filter-select">
+                            <option value="">Select site to assign devices to...</option>
+                            <option value="00146615-0001">00146615-0001 - Riley Studios (6 cameras)</option>
+                            <option value="00146615-0002">00146615-0002 - 42 Hale House (8 cameras)</option>
+                            <option value="00146615-0003">00146615-0003 - Beton (5 cameras)</option>
+                            <option value="00146615-0006" selected>00146615-0006 - 34-36 Elmtree (6 cameras)</option>
+                            <option value="00146615-0007">00146615-0007 - The Gate House (0 cameras)</option>
+                            <option value="00146615-0008">00146615-0008 - The Landing (0 cameras)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Filter by Type / Status</label>
+                        <select class="filter-select">
+                            <option value="all">All Devices</option>
+                            <option value="cameras">Cameras Only</option>
+                            <option value="online">Online Only</option>
+                            <option value="offline">Offline Only</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-refresh">
+                        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white;">
+                            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+            
+            <div class="device-list-container">
+                <div class="list-header">
+                    <div class="list-title">Unassigned Devices (14)</div>
+                    <div>
+                        <span class="selection-info">3 devices selected</span>
+                        <div class="selection-actions">
+                            <button class="btn-select">Select All</button>
+                            <button class="btn-select">Clear</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="device-list">
+                    <div class="device-item selected">
+                        <div class="device-main">
+                            <div class="device-checkbox">
+                                <input type="checkbox" checked>
+                            </div>
+                            <div class="device-info">
+                                <div class="device-header">
+                                    <svg class="device-icon" viewBox="0 0 24 24">
+                                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                                    </svg>
+                                    <span class="device-esn">1001234580</span>
+                                </div>
+                                <div class="device-name">34-36 Elmtree - Front Door</div>
+                                <div class="device-meta">
+                                    <div class="device-status">
+                                        <span class="status-dot online"></span>
+                                        <span>Online</span>
+                                    </div>
+                                    <span>Type: Camera</span>
+                                    <span>Bridge: 1000123456</span>
+                                    <span>Model: CMVR-HD-4</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="device-item selected">
+                        <div class="device-main">
+                            <div class="device-checkbox">
+                                <input type="checkbox" checked>
+                            </div>
+                            <div class="device-info">
+                                <div class="device-header">
+                                    <svg class="device-icon" viewBox="0 0 24 24">
+                                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                                    </svg>
+                                    <span class="device-esn">1001234581</span>
+                                </div>
+                                <div class="device-name">34-36 Elmtree - Back Gate</div>
+                                <div class="device-meta">
+                                    <div class="device-status">
+                                        <span class="status-dot online"></span>
+                                        <span>Online</span>
+                                    </div>
+                                    <span>Type: Camera</span>
+                                    <span>Bridge: 1000123456</span>
+                                    <span>Model: CMVR-HD-4</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="device-item selected">
+                        <div class="device-main">
+                            <div class="device-checkbox">
+                                <input type="checkbox" checked>
+                            </div>
+                            <div class="device-info">
+                                <div class="device-header">
+                                    <svg class="device-icon" viewBox="0 0 24 24">
+                                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                                    </svg>
+                                    <span class="device-esn">1001234582</span>
+                                </div>
+                                <div class="device-name">34-36 Elmtree - Side Entrance</div>
+                                <div class="device-meta">
+                                    <div class="device-status">
+                                        <span class="status-dot online"></span>
+                                        <span>Online</span>
+                                    </div>
+                                    <span>Type: Camera</span>
+                                    <span>Bridge: 1000123456</span>
+                                    <span>Model: CMVR-HD-4</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="device-item">
+                        <div class="device-main">
+                            <div class="device-checkbox">
+                                <input type="checkbox">
+                            </div>
+                            <div class="device-info">
+                                <div class="device-header">
+                                    <svg class="device-icon" viewBox="0 0 24 24">
+                                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                                    </svg>
+                                    <span class="device-esn">1001234583</span>
+                                </div>
+                                <div class="device-name">The Gate House - Main Gate</div>
+                                <div class="device-meta">
+                                    <div class="device-status">
+                                        <span class="status-dot offline"></span>
+                                        <span>Offline</span>
+                                    </div>
+                                    <span>Type: Camera</span>
+                                    <span>Bridge: 1000123457</span>
+                                    <span>Model: CMVR-HD-8</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="device-item">
+                        <div class="device-main">
+                            <div class="device-checkbox">
+                                <input type="checkbox">
+                            </div>
+                            <div class="device-info">
+                                <div class="device-header">
+                                    <svg class="device-icon" viewBox="0 0 24 24">
+                                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                                    </svg>
+                                    <span class="device-esn">1001234584</span>
+                                </div>
+                                <div class="device-name">The Gate House - Pedestrian Entry</div>
+                                <div class="device-meta">
+                                    <div class="device-status">
+                                        <span class="status-dot online"></span>
+                                        <span>Online</span>
+                                    </div>
+                                    <span>Type: Camera</span>
+                                    <span>Bridge: 1000123457</span>
+                                    <span>Model: CMVR-HD-4</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- More devices would be here -->
+                    <div style="padding: 20px; text-align: center; color: #8a8886; font-size: 14px;">
+                        ... 9 more devices
+                    </div>
+                </div>
+            </div>
+            
+            <div class="assign-section">
+                <div class="assign-title">Assign Selected Devices</div>
+                <div class="assign-controls">
+                    <div>
+                        <div style="font-size: 14px; margin-bottom: 8px; opacity: 0.9;">
+                            Assign 3 selected devices to:
+                        </div>
+                        <select class="assign-select">
+                            <option value="00146615-0006">00146615-0006 - 34-36 Elmtree</option>
+                        </select>
+                    </div>
+                    <button class="btn-assign">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                        </svg>
+                        Assign 3 Devices
+                    </button>
+                </div>
+            </div>
+            
+            <div class="progress-section">
+                <div class="progress-header">
+                    <div class="progress-title">Assignment Progress</div>
+                    <div class="progress-stats">36 / 50</div>
+                </div>
+                
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 72%;">
+                        <span class="progress-text">72%</span>
+                    </div>
+                </div>
+                
+                <div class="site-progress-list">
+                    <div class="site-progress-item complete">
+                        <div>
+                            <div class="site-name">Riley Studios</div>
+                            <div class="site-cameras">6 cameras</div>
+                        </div>
+                        <div class="site-status complete">✓ Complete</div>
+                    </div>
+                    
+                    <div class="site-progress-item complete">
+                        <div>
+                            <div class="site-name">42 Hale House</div>
+                            <div class="site-cameras">8 cameras</div>
+                        </div>
+                        <div class="site-status complete">✓ Complete</div>
+                    </div>
+                    
+                    <div class="site-progress-item complete">
+                        <div>
+                            <div class="site-name">Beton</div>
+                            <div class="site-cameras">5 cameras</div>
+                        </div>
+                        <div class="site-status complete">✓ Complete</div>
+                    </div>
+                    
+                    <div class="site-progress-item complete">
+                        <div>
+                            <div class="site-name">19 Elm Tree</div>
+                            <div class="site-cameras">4 cameras</div>
+                        </div>
+                        <div class="site-status complete">✓ Complete</div>
+                    </div>
+                    
+                    <div class="site-progress-item pending">
+                        <div>
+                            <div class="site-name">The Gate House</div>
+                            <div class="site-cameras">0 of 9 cameras</div>
+                        </div>
+                        <div class="site-status pending">⚠ Pending</div>
+                    </div>
+                    
+                    <div class="site-progress-item pending">
+                        <div>
+                            <div class="site-name">The Landing</div>
+                            <div class="site-cameras">0 of 5 cameras</div>
+                        </div>
+                        <div class="site-status pending">⚠ Pending</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
